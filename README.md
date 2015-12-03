@@ -154,7 +154,7 @@ With that, you should see something along the lines of
 $ git log
 ```
 
-which gives something like
+which outputs something like
 
 ```
 commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
@@ -163,3 +163,32 @@ Date:   Wed Dec 2 20:54:14 2015 -0800
 
     Initial commit
 ```
+
+Telling us the commit identifier, author, date, and message of our sole commit.
+
+So what actually happened here? Where did Git put our data? If we list the directory contents
+
+```
+$ ls
+```
+
+We only see `hello.txt`. However, if we list *everything*
+
+```
+$ ls -al
+```
+
+We see the hidden `.git` folder as well
+
+```
+total 8
+drwxr-xr-x   4 mike  staff  136 Dec  2 20:32 .
+drwxr-xr-x   4 mike  staff  136 Dec  2 20:25 ..
+drwxr-xr-x  13 mike  staff  442 Dec  2 20:54 .git
+-rw-r--r--   1 mike  staff   13 Dec  2 20:32 hello.txt
+```
+
+When we staged **hello.txt** with `git add` and committed it with `git commit`, git was creating and modifying files in the `.git` folder to reflect these commands. Your git repository is effectively the `.git` folder. In your lifetime, you may never need to peak inside this folder--just rest assured that git is dutifully carrying out its job and maintaining your repository there. 
+
+Services like [GitHub](https://github.com/) are effecitvely just storing a copy of this `.git` folder on their servers for you. When collaborators `git push` and `git pull` from a repository, they are just writing to and reading from a `.git` folder. The simplicity of this model is one of the finer points of git.
+
