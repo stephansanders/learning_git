@@ -192,3 +192,119 @@ When we staged **hello.txt** with `git add` and committed it with `git commit`, 
 
 Services like [GitHub](https://github.com/) are effecitvely just storing a copy of this `.git` folder on their servers for you. When collaborators `git push` and `git pull` from a repository, they are just writing to and reading from a `.git` folder. The simplicity of this model is one of the finer points of git.
 
+## Make a second commit
+
+Let's add something to our file.
+
+```
+$ echo "It's a beautiful day" >> hello.txt
+```
+
+Again, you can just use your editor of choice. Let's make sure the changes are what we expect
+
+```
+$ cat hello.txt
+```
+
+which gives
+
+```
+Hello, world
+It's a beautiful day
+```
+
+Amazing. What has git made of all this? `git status` is your friend in determining the state of your repository.
+
+```
+$ git status
+```
+
+gives
+
+```
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   hello.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+Git has noticed that **hello.txt** has been modified, and it notices that **hello.txt** has not been staged for a commit. This is an interesting situation. The version of **hello.txt** on our filesystem has one additional line compared to the version of **hello.txt** in our git repository.
+
+To make ourselves aware of the differences between what's in our *working directory* and what's in our *repository*, we can issue a `git diff`
+
+```
+$ git diff
+```
+
+which gives us the useful, but arcane
+
+```
+diff --git a/hello.txt b/hello.txt
+index a5c1966..9cf85e0 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1 +1,2 @@
+ Hello, world
++It's a beautiful day
+```
+
+If you're not familiar with `diff`ing files, what we see is the *difference* between the two versions of **hello.txt**. If you look at the last two lines
+
+```
+ Hello, world
++It's a beautiful day
+```
+
+It's apparent that our working copy of **hello.txt** has one line added with respect to the previous version. This is good, it's what we intended. Let's stage our changes and commit.
+
+Stage it.
+
+```
+$ git add hello.txt
+```
+
+Verify it's staged.
+
+```
+$ git status
+
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   hello.txt
+
+```
+
+Yep, it's ready to be committed.
+Now commit it.
+
+```
+$ git commit -m "Brilliant new line"
+
+[master 6f00341] Brilliant new line
+ 1 file changed, 1 insertion(+)
+```
+
+And behold the new history of our repository
+
+```
+$ git log
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
+
+Excellent! Our initial commit is now followed our recent commit.
