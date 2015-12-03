@@ -51,7 +51,9 @@ usage: git [--version] [--help] [-C <path>] [-c name=value]
            [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
            <command> [<args>]
 
-...
+           .
+           .
+           .
 ```
 
 With Git installed, let's create an empty repository.
