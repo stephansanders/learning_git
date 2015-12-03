@@ -446,7 +446,7 @@ In recap, we recovered from a major mistake by reverting to the last copy of a f
 
 ### Making use of (distant) history
 
-Suppose we want to revert our file to some ancestral state, beyond just the latest copy in the repository. `git diff` and `git log` will help us accomplish this.
+Suppose we want to revert our file to some ancestral state, beyond just the latest copy in the repository. `git diff` and `git log` will help us find the right version from history, and `git checkout` will unpack it from the history into the working directory on the filesystem.
 
 Maybe we're not sure which version of the file we want to revert to, so we use `git log` and look at our commit messages for some clues.
 
