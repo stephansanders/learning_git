@@ -192,7 +192,7 @@ When we staged **hello.txt** with `git add` and committed it with `git commit`, 
 
 Services like [GitHub](https://github.com/) are effecitvely just storing a copy of this `.git` folder on their servers for you. When collaborators `git push` and `git pull` from a repository, they are just writing to and reading from a `.git` folder. The simplicity of this model is one of the finer points of git.
 
-## Make a second commit
+### Make a second commit
 
 Let's add something to our file.
 
@@ -308,3 +308,122 @@ Date:   Wed Dec 2 20:54:14 2015 -0800
 ```
 
 Excellent! Our initial commit is now followed our recent commit.
+
+### Making use of history
+
+So we've built up these snapshots of a file. How would we ever use them to our benefit? One primary use case is rolling back to previous versions. Let's take a look at how to do that.
+
+We'll begin by making a change that we regret.
+
+```
+$ echo "I think I'll take a walk" > hello.txt
+```
+
+Invoking this command with the `>` redirection operator *overwrites* the file, rather than appending to it. I.e. we mystyped `>` for `>>`. Now if we look at the contents of **hello.txt**, only the line added above is in the file.
+
+```
+$ cat hello.txt 
+
+I think I'll take a walk
+```
+
+The rest of our brilliant prose has been demolished! Git can help us. If we `git status` there is a clue of how to recover the file.
+
+```
+$ git status
+
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   hello.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+As indicated above, we can replace the modified copy of **hello.txt** in our working directory with the latest copy from the repository by issuing `git checkout -- hello.txt`. I.e. see the line
+
+```
+  (use "git checkout -- <file>..." to discard changes in working directory)
+```
+
+So
+
+```
+$ git checkout -- hello.txt
+```
+
+And doing another `git status` shows that there are no longer modifications.
+
+```
+$ git status
+
+On branch master
+nothing to commit, working directory clean
+```
+
+We can print the file to show that it's been reverted to the last snapshot.
+
+```
+$ cat hello.txt
+
+Hello, world
+It's a beautiful day
+```
+
+Yay. Now let's properly add that last line, stage, and commit
+
+```
+$ echo "I think I'll take a walk" >> hello.txt
+$ cat hello.txt
+
+Hello, world
+It's a beautiful day
+I think I'll take a walk
+
+$ git status
+
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   hello.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git add hello.txt
+$ git status
+
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   hello.txt
+
+$ git commit -m "Exercise is good"
+
+[master 9d7dab6] Exercise is good
+ 1 file changed, 1 insertion(+)
+ 
+$ git log
+
+commit 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:41:17 2015 -0800
+
+    Exercise is good
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
