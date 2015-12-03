@@ -1,4 +1,4 @@
-# learning_git
+# Psychcore Git Tutorial
 
 This is a basic tutorial on using Git.
 
