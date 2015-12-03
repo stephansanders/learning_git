@@ -1,7 +1,5 @@
 # Psychcore Git Tutorial
 
-This is a tutorial on using Git. If you have comments or suggestions, come talk to me, or send an email to Michael.Gilson@ucsf.edu.
-
 ## What Git does and why you should use it.
 
 Git is a tool that allows you to save, track changes, and manage a file or project as it evolves over time. This is a good thing. You can use git at the inception of a project, or after it is already under way.
