@@ -41,3 +41,28 @@ usage: git [--version] [--help] [-C <path>] [-c name=value]
 
 ...
 ```
+
+With Git installed, let's create an empty repository.
+
+### Creating a git project from scratch
+
+First pick a suitable location where you can create files and directories. I've chosen `/Users/mike/Scratch/GitLearning` because it's under my home folder, so I have write access there.
+
+From the command line, make sure you're in the right folder by entering the `pwd` command, which prints the current (working) directory. E.g.
+
+```
+$ pwd
+```
+
+If you're there, great. If not, `cd` into your chosen folder. Now initialize the empty Git repository with
+
+```
+$ git init
+```
+
+You should see something to the effect of
+
+```
+Initialized empty Git repository in /Users/mike/Scratch/GitLearning/.git/
+```
+
