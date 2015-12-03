@@ -66,3 +66,100 @@ You should see something to the effect of
 Initialized empty Git repository in /Users/mike/Scratch/GitLearning/.git/
 ```
 
+Congratulations, you have created a Git repo! Now lets add some files.
+
+### Adding the first file
+
+Let's create a file with the contents "Hello, world" in our spiffy new Git repo. One way to do this is by redirecting the output of the `echo` command to a file like so
+
+```
+$ echo "Hello, world" > hello.txt
+```
+
+You could also use your editor of choice (`Vi`, right?) and create the file that way. Nevertheless, just ensure the file has been created, e.g.
+
+```
+$ cat hello.txt
+```
+
+Which should print `Hello, world` on its own line. Great. Now let's see what Git makes of this. To check the status of your Git repository, issue the command `git status`, e.g.
+
+```
+$ git status
+```
+
+Which should display
+
+```
+On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        hello.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+
+For now, just ignore the `branch` stuff, and notice that your file **hello.txt** is `Untracked`. What this means is that you have not instructed Git that you wish to track the revisions of this file. It's useful to note that Git will only track files that you instruct it to track. This is a nice feature. As you become an expert, you'll find that some files you wish to track and others you do not.
+
+Let's track **hello.txt**. To do so, we issue the `git add` command with **hello.txt** as an argument
+
+```
+$ git add hello.txt
+```
+
+Let's see the status of our repo now that we've tracked **hello.txt**. Enter `git status` once again.
+
+```
+$ git status
+```
+
+Which should display
+
+```
+On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+        new file:   hello.txt
+```
+
+We see that Git is aware of **hello.txt** as a `new file`. At this point, we've made Git acknowledge the file, but we haven't saved a snapshot of it yet. What we've done with `git add` is place the file in Git's **staging area**. 
+
+The **staging area** is where we put files before we commit. It may seem weird, at first, to have this **staging area**. Why not just commit files directly? The short answer is that when you are working with many files, and you want a series of changes to be committed in concert, and other changes not to be committed, it is the **staging area** that allows us to achieve this isolation. 
+
+With our staging area prep'd, let's now make our first commit 
+
+```
+$ git commit -m "Initial commit"
+```
+
+With that, you should see something along the lines of
+
+```
+[master (root-commit) 5bbb4d7] Initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello.txt
+```
+
+**hello.txt** has now been committed! Let's reflect on our work by looking at the history (albeit a short one) of our repository
+
+```
+$ git log
+```
+
+which gives something like
+
+```
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
