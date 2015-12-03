@@ -427,3 +427,255 @@ Date:   Wed Dec 2 20:54:14 2015 -0800
 
     Initial commit
 ```
+
+In recap, we recovered from a major mistake by reverting to the last copy of a file int the repository. What if we want to go back... further?
+
+### Making use of (distant) history
+
+Suppose we want to revert our file to some ancestral state, beyond just the latest copy in the repository. `git diff` and `git log` will help us accomplish this.
+
+Maybe we're not sure which version of the file we want to revert to, so we use `git log` and look at our commit messages for some clues.
+
+```
+$ git log
+
+commit 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:41:17 2015 -0800
+
+    Exercise is good
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
+
+Perhaps we think we want to go back to the inital commit, but we're not sure what the difference is? We can use `git diff` in combination with the commit id to find out. So the commit id for the `Initial commit` is `5bbb4d76b4a843ee3156a627c921a52a764effa8`, so to compare our current **hello.txt** to the version from the commit we
+
+```
+$ git diff 5bbb4d76b4a843ee3156a627c921a52a764effa8
+
+diff --git a/hello.txt b/hello.txt
+index a5c1966..e503a0c 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1 +1,3 @@
+ Hello, world
++It's a beautiful day
++I think I'll take a walk
+```
+
+The last three lines show us that the current version of **hello.txt** has two additional lines with respect to the version in commit `5bbb4d76b4a843ee3156a627c921a52a764effa8`. If we wish to go all the way back to that original version, we just check it out, with the syntax `git checkout <commit id> <file name>`
+
+```
+$ git checkout 5bbb4d76b4a843ee3156a627c921a52a764effa8 hello.txt
+```
+
+Now if we do a `git status`, we see that the file has been modified.
+
+```
+$ git status
+
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   hello.txt
+```
+
+And the contents are...
+
+```
+$ cat hello.txt
+
+Hello, world
+```
+
+Perfect! We're happy. Let's stage this thing and commit it.
+
+```
+$ git add hello.txt
+$ git status
+
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   hello.txt
+
+$ git commit -m "A oldie but goodie"
+[master ccd7f8e] A oldie but goodie
+ 1 file changed, 2 deletions(-)
+```
+
+But what will our history look like now? Did we just demolish all of our intermediate revisions? Let's ask `git log` for the answer
+
+```
+$ git log
+
+commit ccd7f8e01d1af1065e30575d710dd297c3114c57
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:58:37 2015 -0800
+
+    A oldie but goodie
+
+commit 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:41:17 2015 -0800
+
+    Exercise is good
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
+
+No! They are all still there. We've just written another snapshot into history. Git didn't care that we reverted to an old copy. As far as git is concerned, we just made yet another modification. To prove to ourselves that we can recover the 3-line version of **hello.txt**, let's revert to *that* commit!
+
+### Returning to our 3-line version
+
+Let's get the commit id of the version we want.
+
+```
+$ git log
+
+commit ccd7f8e01d1af1065e30575d710dd297c3114c57
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:58:37 2015 -0800
+
+    A oldie but goodie
+
+commit 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:41:17 2015 -0800
+
+    Exercise is good
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
+
+So, the commit with the message `Exercise is good` is the 3-line version of the file. Let's make sure it's the version we want. First copy the commit id `9d7dab6193f1ede33aba72bc3f2cf0f400b036f3` to the clipboard, and do a `git diff` with it.
+
+```
+$ git diff 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+
+diff --git a/hello.txt b/hello.txt
+index e503a0c..a5c1966 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,3 +1 @@
+ Hello, world
+-It's a beautiful day
+-I think I'll take a walk
+```
+
+The `diff` tells us that our current copy is missing the last two lines from the version in the commit we specified. Looks like this is the right commit. Let's check out the copy of **hello.txt** from that commit.
+
+```
+$ git checkout 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3 hello.txt 
+```
+
+And inspect the file to make sure it's correct.
+
+```
+$ cat hello.txt
+
+Hello, world
+It's a beautiful day
+I think I'll take a walk
+```
+
+Success! Let's add another line for grins.
+
+```
+$ echo "I think I'll take a nap" >> hello.txt
+```
+
+And inspect it
+
+```
+$ cat hello.txt
+
+Hello, world
+It's a beautiful day
+I think I'll take a walk
+I think I'll take a nap
+```
+
+Now stage it, commit it, and inspect the log!
+
+```
+$ git add hello.txt
+$ git status
+
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   hello.txt
+
+$ git commit -m "Final commit. (for now)"
+
+[master f5ac00c] Final commit. (for now)
+ 1 file changed, 3 insertions(+)
+ 
+$ git log
+
+commit f5ac00c0a3347571c89dbe9ed75c3069d5594c35
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 22:08:23 2015 -0800
+
+    Final commit. (for now)
+
+commit ccd7f8e01d1af1065e30575d710dd297c3114c57
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:58:37 2015 -0800
+
+    A oldie but goodie
+
+commit 9d7dab6193f1ede33aba72bc3f2cf0f400b036f3
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:41:17 2015 -0800
+
+    Exercise is good
+
+commit 6f003416432edfc70c85244017c54939748ac9e9
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 21:23:37 2015 -0800
+
+    Brilliant new line
+
+commit 5bbb4d76b4a843ee3156a627c921a52a764effa8
+Author: Michael Gilson <gilson@cs.wisc.edu>
+Date:   Wed Dec 2 20:54:14 2015 -0800
+
+    Initial commit
+```
+
+That's it for now!
