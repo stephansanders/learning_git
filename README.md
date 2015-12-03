@@ -10,5 +10,9 @@ In either case, as the files in your project evolve, you can save snapshots of t
 
 The other great thing about Git is its facility for collaboration. If you are collaborating with others on a project, Git makes it easier to work on a shared set of files and orchestrate changes in a tractable way.
 
-Finally, there are many free services that will host your Git repositories (projects tracked with Git) and add value to your git experience. Most notably, GitHub and Bitbucket. These services are not integral to Git, but they do have some really nice free features.
+Finally, there are many free services that will host your Git repositories (projects tracked with Git) and add value to your git experience. Most notably, [GitHub](https://www.github.com) and [Bitbucket](https://bitbucket.org). These services are not integral to Git, but they do have some really nice free features.
+
+Let's start with the basic Git workflow, which will be 90% of what you do with Git.
+
+## Basic Git Workflow
 
