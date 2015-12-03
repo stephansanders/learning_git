@@ -16,6 +16,20 @@ Let's start with the basic Git workflow, which will be 90% of what you do with G
 
 ## Basic Git Workflow
 
+The following is a walk-through of your basic Git workflow. It's composed of these section
+
+1. Installation
+2. Creating a git project from scratch
+3. Adding the first file
+4. Making a second commit
+5. Making use of history
+6. Making use of (distant) history
+7. Returning to our 3-line version
+
+which will teach the basics of repository creation, repository structure, making changes to files and writing snapshots, and reverting to versions from history.
+
+### Installation
+
 The first thing you'll need is a copy of Git on your machine. The following links point to installs for Mac, Windows, and Linux.
 
 * [Git for Mac](http://git-scm.com/download/mac)
@@ -192,7 +206,7 @@ When we staged **hello.txt** with `git add` and committed it with `git commit`, 
 
 Services like [GitHub](https://github.com/) are effecitvely just storing a copy of this `.git` folder on their servers for you. When collaborators `git push` and `git pull` from a repository, they are just writing to and reading from a `.git` folder. The simplicity of this model is one of the finer points of git.
 
-### Make a second commit
+### Making a second commit
 
 Let's add something to our file.
 
