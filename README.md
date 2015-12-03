@@ -16,3 +16,8 @@ Let's start with the basic Git workflow, which will be 90% of what you do with G
 
 ## Basic Git Workflow
 
+The first thing you need is a copy of Git installed on your system. The following are links to installs for Mac, Windows, and Linux.
+
+* [Git for Mac](http://git-scm.com/download/mac)
+* [Git for Windows](https://git-for-windows.github.io)
+* [Git for Linux](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
