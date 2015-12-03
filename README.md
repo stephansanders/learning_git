@@ -16,8 +16,28 @@ Let's start with the basic Git workflow, which will be 90% of what you do with G
 
 ## Basic Git Workflow
 
-The first thing you need is a copy of Git installed on your system. The following are links to installs for Mac, Windows, and Linux.
+The first thing you'll need is a copy of Git on your machine. The following links point to installs for Mac, Windows, and Linux.
 
 * [Git for Mac](http://git-scm.com/download/mac)
 * [Git for Windows](https://git-for-windows.github.io)
 * [Git for Linux](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+You can check if Git is already installed on your machine by invoking the `git` command at the command line, e.g.
+
+```
+$ git
+```
+
+(*Note: the `$` indicates that the following text is entered at a command prompt. You should not enter the `$` itself*).
+
+The results of running `git` on my machine are 
+
+```
+usage: git [--version] [--help] [-C <path>] [-c name=value]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           <command> [<args>]
+
+...
+```
